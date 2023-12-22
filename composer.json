@@ -1,0 +1,20 @@
+{
+  "name": "limmer-laboratories/kafka-bunlde",
+  "type": "symfony-bundle",
+  "version": "1.0.0",
+  "require": {
+    "php": ">=8.1",
+    "symfony/http-kernel": ">=6.2"
+  },
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "LimLabs\\KafkaBundle\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "LimLabs\\KafkaBundle\\Tests\\": "tests/"
+    }
+  }
+}
