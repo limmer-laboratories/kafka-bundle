@@ -1,0 +1,6 @@
+kafka:
+  clients:
+    default:
+      brokers: 'kafka:9092'
+      log_level: LOG_DEBUG
+      debug: all

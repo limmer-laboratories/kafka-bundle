@@ -1,10 +1,14 @@
 {
-  "name": "limmer-laboratories/kafka-bunlde",
+  "name": "limmer-laboratories/kafka-bundle",
   "type": "symfony-bundle",
   "version": "1.0.0",
   "require": {
     "php": ">=8.1",
-    "symfony/http-kernel": ">=6.2"
+    "ext-rdkafka": "*",
+    "symfony/http-kernel": "^6.4"
+  },
+  "require-dev": {
+    "symfony/symfony": "^6.4"
   },
   "license": "MIT",
   "autoload": {
