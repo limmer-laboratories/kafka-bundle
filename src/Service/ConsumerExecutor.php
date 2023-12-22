@@ -107,8 +107,6 @@ class ConsumerExecutor
 
             $this->handleMessageError($message);
             $this->consumer->consume($message->payload);
-
-//            $this->kafkaConsumer->commit($message);
         }
     }
 
@@ -117,8 +115,14 @@ class ConsumerExecutor
      */
     private function handleMessageError(Message $message): void
     {
-        if ($message->err != RD_KAFKA_RESP_ERR_NO_ERROR) {
-            throw new ConsumingException($message->errstr());
+        if ($message->err == RD_KAFKA_RESP_ERR_NO_ERROR) {
+            return;
         }
+
+        if ($message->err == RD_KAFKA_RESP_ERR__PARTITION_EOF) {
+            return;
+        }
+
+        throw new ConsumingException($message->errstr());
     }
 }
