@@ -20,4 +20,9 @@ class KafkaClient
     {
         return $this->producer;
     }
+
+    public function getBrokers(): string
+    {
+        return $this->brokers;
+    }
 }
