@@ -5,7 +5,6 @@
   "require": {
     "php": ">=8.1",
     "ext-rdkafka": "*",
-    "symfony/http-kernel": "^6.4",
     "ext-pcntl": "*"
   },
   "require-dev": {
