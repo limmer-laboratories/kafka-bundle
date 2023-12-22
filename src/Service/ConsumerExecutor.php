@@ -71,6 +71,7 @@ class ConsumerExecutor
         $this->config->set('group.id', $this->consumer->getConsumerConfiguration()->getConsumerGroup());
         $this->config->set('metadata.broker.list', $this->getKafkaBrokerList());
         $this->config->set('auto.offset.reset', $this->consumer->getConsumerConfiguration()->getOffsetReset());
+        $this->config->set('enable.partition.eof', 'true');
     }
 
     private function createKafkaConsumer(): void
@@ -106,6 +107,8 @@ class ConsumerExecutor
 
             $this->handleMessageError($message);
             $this->consumer->consume($message->payload);
+
+//            $this->kafkaConsumer->commit($message);
         }
     }
 
