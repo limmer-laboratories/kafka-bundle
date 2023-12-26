@@ -25,4 +25,9 @@ class KafkaClient
     {
         return $this->brokers;
     }
+
+    public function getConfig(): Conf
+    {
+        return $this->config;
+    }
 }
