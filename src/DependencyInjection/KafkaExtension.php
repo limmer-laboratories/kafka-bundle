@@ -18,7 +18,5 @@ class KafkaExtension extends Extension
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
         $loader->load('services.yaml');
-
-        pcntl_sigprocmask(SIG_BLOCK, array(SIGIO));
     }
 }
