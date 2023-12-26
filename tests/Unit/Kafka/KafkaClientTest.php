@@ -4,7 +4,6 @@ namespace LimLabs\KafkaBundle\Tests\Unit\Kafka;
 
 use LimLabs\KafkaBundle\Kafka\KafkaClient;
 use LimLabs\KafkaBundle\Kafka\KafkaProducer;
-use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
 use RdKafka\Conf;
 
