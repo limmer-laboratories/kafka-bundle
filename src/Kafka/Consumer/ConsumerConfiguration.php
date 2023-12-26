@@ -2,6 +2,9 @@
 
 namespace LimLabs\KafkaBundle\Kafka\Consumer;
 
+use LimLabs\KafkaBundle\Exception\MissingConsumerGroupException;
+use LimLabs\KafkaBundle\Exception\MissingSubscribedTopicsException;
+
 class ConsumerConfiguration
 {
     private string $consumerGroup;
@@ -9,10 +12,21 @@ class ConsumerConfiguration
     private string $offsetReset = 'earliest';
     private array $subscribedTopics = [];
 
+    /**
+     * @throws MissingConsumerGroupException
+     * @throws MissingSubscribedTopicsException
+     */
     public static function createConfiguration(array $configuration): ConsumerConfiguration
     {
+        if (!isset($configuration['consumer_group'])) {
+            throw new MissingConsumerGroupException();
+        }
+
+        if (!isset($configuration['subscribed_topics'])) {
+            throw new MissingSubscribedTopicsException();
+        }
+
         $consumerConfiguration = new ConsumerConfiguration();
-        $consumerConfiguration->setConsumerGroup($configuration['consumer_group']);
 
         if (isset($configuration['connection'])) {
             $consumerConfiguration->setConnection($configuration['connection']);
@@ -22,6 +36,7 @@ class ConsumerConfiguration
             $consumerConfiguration->setOffsetReset($configuration['offset_reset']);
         }
 
+        $consumerConfiguration->setConsumerGroup($configuration['consumer_group']);
         $consumerConfiguration->setSubscribedTopics($configuration['subscribed_topics']);
         return $consumerConfiguration;
     }
