@@ -19,12 +19,12 @@ class ConsumerExecutor
     private KafkaConsumer $consumer;
     private Conf $config;
     private \RdKafka\KafkaConsumer $kafkaConsumer;
-    private SymfonyStyle $io;
 
     public function __construct(
         private readonly ConsumerService $consumerService,
         private readonly KafkaFactory $kafkaFactory,
         private readonly ResponseHandler $responseHandler,
+        private readonly CliMessageService $cliMessageService,
     )
     {
     }
@@ -36,10 +36,8 @@ class ConsumerExecutor
      * @throws RequestedKafkaClientNonExisting
      * @throws Exception
      */
-    public function executeConsumer(SymfonyStyle $io, ?string $name = ''): void
+    public function executeConsumer(?string $name = ''): void
     {
-        $this->io = $io;
-
         $this->loadConsumer($name);
 
         $this->registerConsumerToTopic();
@@ -98,17 +96,16 @@ class ConsumerExecutor
 
     private function consumeMessages(): void
     {
-        $this->io->info('Consumer running... Waiting for messages');
+        $this->cliMessageService->consumerRunning($this->consumer);
 
         while (true) {
             $message = $this->kafkaConsumer->consume(120*1000);
 
-            $this->io->info('Consuming message');
-
+            $this->cliMessageService->consumingMessage();
             $this->handleMessageError($message);
 
             $response = $this->consumer->consume($message->payload);
-            $this->responseHandler->handleConsumerResponse($response, $this->consumer, $message, $this->io);
+            $this->responseHandler->handleConsumerResponse($response, $this->consumer, $message);
         }
     }
 

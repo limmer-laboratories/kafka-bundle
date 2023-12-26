@@ -8,15 +8,15 @@ use LimLabs\KafkaBundle\Exception\RequestedKafkaClientNonExisting;
 use LimLabs\KafkaBundle\Factory\KafkaFactory;
 use LimLabs\KafkaBundle\Kafka\Consumer\KafkaConsumer;
 use RdKafka\Message;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ResponseHandler
 {
-    private KafkaConsumer $kafkaConsumer;
+    private KafkaConsumer $consumer;
     private Message $message;
 
     public function __construct(
         private readonly KafkaFactory $kafkaFactory,
+        private readonly CliMessageService $cliMessageService,
     ) {
     }
 
@@ -24,9 +24,8 @@ class ResponseHandler
         ConsumerResponse $response,
         KafkaConsumer $consumer,
         Message $message,
-        SymfonyStyle $io = null
     ): void {
-        $this->kafkaConsumer = $consumer;
+        $this->consumer = $consumer;
         $this->message = $message;
 
         if ($response == ConsumerResponse::SUCCESS) {
@@ -34,15 +33,15 @@ class ResponseHandler
         }
 
         if ($response == ConsumerResponse::ERROR_DROP) {
-            $io->error('An error occurred while consuming a message. The message got dropped');
+            $this->cliMessageService->errorDroppedMessage();
         }
 
         if ($response == ConsumerResponse::ERROR_REQUEUE) {
             try {
                 $this->requeueMessage();
-                $io->error('An error occurred while consuming a message. The message got requeued');
+                $this->cliMessageService->errorRequeuedMessage();
             } catch (CouldNotCreateTopic|RequestedKafkaClientNonExisting $e) {
-                $io->error($e->getMessage());
+                $this->cliMessageService->writeErrorMessageWithDate($e->getMessage());
             }
         }
     }
@@ -53,7 +52,7 @@ class ResponseHandler
      */
     private function requeueMessage(): void
     {
-        $configuration = $this->kafkaConsumer->getConsumerConfiguration();
+        $configuration = $this->consumer->getConsumerConfiguration();
         $connection = $configuration->getConnection();
         $topic = $this->message->topic_name;
 

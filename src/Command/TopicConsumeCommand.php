@@ -18,14 +18,15 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 #[AsCommand(name: 'kafka:topic:consume')]
 class TopicConsumeCommand extends Command
 {
+    public static ?SymfonyStyle $currentSymfonyStyle = null;
+    protected static $defaultDescription = 'Consume a kafka topic';
+
     public function __construct(
         private readonly ConsumerExecutor $consumerExecutor,
         $name = null
     ) {
         parent::__construct($name);
     }
-
-    protected static $defaultDescription = 'Consume a kafka topic';
 
     protected function configure(): void
     {
@@ -41,9 +42,9 @@ class TopicConsumeCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
+        TopicConsumeCommand::$currentSymfonyStyle = new SymfonyStyle($input, $output);
 
-        $this->consumerExecutor->executeConsumer($io, $input->getArgument('consumer'));
+        $this->consumerExecutor->executeConsumer($input->getArgument('consumer'));
         return Command::SUCCESS;
     }
 
