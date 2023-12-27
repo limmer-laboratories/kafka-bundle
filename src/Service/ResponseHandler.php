@@ -4,6 +4,7 @@ namespace LimLabs\KafkaBundle\Service;
 
 use LimLabs\KafkaBundle\Enum\ConsumerResponse;
 use LimLabs\KafkaBundle\Exception\CouldNotCreateTopic;
+use LimLabs\KafkaBundle\Exception\NoDefaultConfigurationExisting;
 use LimLabs\KafkaBundle\Exception\RequestedKafkaClientNonExisting;
 use LimLabs\KafkaBundle\Factory\KafkaFactory;
 use LimLabs\KafkaBundle\Kafka\Consumer\KafkaConsumer;
@@ -48,7 +49,7 @@ class ResponseHandler
 
     /**
      * @throws RequestedKafkaClientNonExisting
-     * @throws CouldNotCreateTopic
+     * @throws CouldNotCreateTopic|NoDefaultConfigurationExisting
      */
     private function requeueMessage(): void
     {
