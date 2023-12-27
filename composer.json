@@ -1,5 +1,5 @@
 {
-  "name": "limmer-laboratories/kafka-bundle",
+  "name": "limlabs/kafka-bundle",
   "type": "symfony-bundle",
   "version": "1.0.0",
   "require": {
