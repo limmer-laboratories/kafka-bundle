@@ -29,6 +29,12 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-php-
 
+    - name: Install ext-rdkafka extension
+      run: sudo apt-get update && sudo apt-get install -y librdkafka-dev && pecl install rdkafka
+
+    - name: Enable ext-rdkafka in PHP
+      run: echo "extension=rdkafka.so" >> $GITHUB_WORKSPACE/php.ini
+
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
 
