@@ -28,12 +28,12 @@ jobs:
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
           ${{ runner.os }}-php-
-
-    - name: Install ext-rdkafka extension
-      run: sudo apt-get update && sudo apt-get install -y librdkafka-dev && pecl install rdkafka
-
-    - name: Enable ext-rdkafka in PHP
-      run: echo "extension=rdkafka.so" >> $GITHUB_WORKSPACE/php.ini
+          
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        extensions: rdkafka
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
