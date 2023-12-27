@@ -1,5 +1,14 @@
 {
   "name": "limlabs/kafka-bundle",
+  "description": "A simple symfony bundle for kafka",
+  "authors": [
+    {
+      "name": "Philipp Limmer",
+      "email": "p.limmer@limmer-laboratories.com",
+      "homepage": "https://limmer-laboratories.com/",
+      "role": "Developer"
+    }
+  ],
   "type": "symfony-bundle",
   "version": "1.0.0",
   "require": {
