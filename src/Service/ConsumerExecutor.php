@@ -5,6 +5,7 @@ namespace LimLabs\KafkaBundle\Service;
 use LimLabs\KafkaBundle\Exception\ConsumerNotImplementedKafkaConsumerException;
 use LimLabs\KafkaBundle\Exception\ConsumingException;
 use LimLabs\KafkaBundle\Exception\NoConsumersRegisteredException;
+use LimLabs\KafkaBundle\Exception\NoDefaultConfigurationExisting;
 use LimLabs\KafkaBundle\Exception\RequestedConsumerNotExistingException;
 use LimLabs\KafkaBundle\Exception\RequestedKafkaClientNonExisting;
 use LimLabs\KafkaBundle\Factory\KafkaFactory;
@@ -34,7 +35,7 @@ class ConsumerExecutor
      * @throws RequestedConsumerNotExistingException
      * @throws NoConsumersRegisteredException
      * @throws RequestedKafkaClientNonExisting
-     * @throws Exception
+     * @throws Exception|NoDefaultConfigurationExisting
      */
     public function executeConsumer(?string $name = ''): void
     {
@@ -62,7 +63,7 @@ class ConsumerExecutor
     }
 
     /**
-     * @throws RequestedKafkaClientNonExisting
+     * @throws RequestedKafkaClientNonExisting|NoDefaultConfigurationExisting
      */
     private function registerConsumerToTopic(): void
     {
@@ -86,7 +87,7 @@ class ConsumerExecutor
     }
 
     /**
-     * @throws RequestedKafkaClientNonExisting
+     * @throws RequestedKafkaClientNonExisting|NoDefaultConfigurationExisting
      */
     private function getKafkaBrokerList(): string
     {
