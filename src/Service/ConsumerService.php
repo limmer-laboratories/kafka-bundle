@@ -26,7 +26,7 @@ class ConsumerService
 
         foreach ($this->consumers as $consumer) {
             if (! $consumer instanceof KafkaConsumer) {
-                throw new ConsumerNotImplementedKafkaConsumerException("$consumer does not implement the KafkaConsumer interface");
+                throw new ConsumerNotImplementedKafkaConsumerException(get_class($consumer) . ' does not implement the KafkaConsumer interface');
             }
             $consumers[] = $consumer;
         }
