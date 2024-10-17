@@ -100,7 +100,7 @@ class ConsumerExecutor
         $this->cliMessageService->consumerRunning($this->consumer);
 
         while (true) {
-            $message = $this->kafkaConsumer->consume(120*1000);
+            $message = $this->kafkaConsumer->consume(3600e3);
 
             $this->cliMessageService->consumingMessage();
             $this->handleMessageError($message);
