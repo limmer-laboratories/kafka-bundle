@@ -98,16 +98,26 @@ class ConsumerExecutor
     private function consumeMessages(): void
     {
         $this->cliMessageService->consumerRunning($this->consumer);
+        $this->consumeMessageRecursive();
+    }
 
-        while (true) {
-            $message = $this->kafkaConsumer->consume(3600e3);
+    private function consumeMessageRecursive(): void
+    {
+        $message = $this->kafkaConsumer->consume(3600e3);
 
-            $this->cliMessageService->consumingMessage();
-            $this->handleMessageError($message);
+        $this->cliMessageService->consumingMessage();
 
-            $response = $this->consumer->consume($message->payload);
-            $this->responseHandler->handleConsumerResponse($response, $this->consumer, $message);
+        if ($message->err == RD_KAFKA_RESP_ERR__TIMED_OUT) {
+            $this->consumeMessageRecursive();
+            return;
         }
+
+        $this->handleMessageError($message);
+
+        $response = $this->consumer->consume($message->payload);
+        $this->responseHandler->handleConsumerResponse($response, $this->consumer, $message);
+
+        $this->consumeMessageRecursive();
     }
 
     /**
